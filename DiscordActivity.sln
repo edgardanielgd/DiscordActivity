@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiscordActivity", "DiscordActivity\DiscordActivity.vcxproj", "{B0768AAA-1DDC-445D-AAA6-68B8F267A904}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Injector", "Injector\Injector.vcxproj", "{8C321430-28F9-4E27-A8BE-9FA445BF5F74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{B0768AAA-1DDC-445D-AAA6-68B8F267A904}.Release|x64.Build.0 = Release|x64
 		{B0768AAA-1DDC-445D-AAA6-68B8F267A904}.Release|x86.ActiveCfg = Release|Win32
 		{B0768AAA-1DDC-445D-AAA6-68B8F267A904}.Release|x86.Build.0 = Release|Win32
+		{8C321430-28F9-4E27-A8BE-9FA445BF5F74}.Debug|x64.ActiveCfg = Debug|x64
+		{8C321430-28F9-4E27-A8BE-9FA445BF5F74}.Debug|x64.Build.0 = Debug|x64
+		{8C321430-28F9-4E27-A8BE-9FA445BF5F74}.Debug|x86.ActiveCfg = Debug|Win32
+		{8C321430-28F9-4E27-A8BE-9FA445BF5F74}.Debug|x86.Build.0 = Debug|Win32
+		{8C321430-28F9-4E27-A8BE-9FA445BF5F74}.Release|x64.ActiveCfg = Release|x64
+		{8C321430-28F9-4E27-A8BE-9FA445BF5F74}.Release|x64.Build.0 = Release|x64
+		{8C321430-28F9-4E27-A8BE-9FA445BF5F74}.Release|x86.ActiveCfg = Release|Win32
+		{8C321430-28F9-4E27-A8BE-9FA445BF5F74}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,58 +1,36 @@
-// dllmain.cpp : Define el punto de entrada de la aplicación DLL.
-#include "pch.h"
+#include <windows.h>
+#include <winerror.h>
+#include <psapi.h>
 
-#define LOG_FILE L"C:\\MyLogFile.txt"
-
-void WriteLog(char* text)
+void Attack()
 {
-    HANDLE hfile = CreateFileW(
-        LOG_FILE, GENERIC_WRITE, 
-        FILE_SHARE_READ, NULL, 
-        OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 
-        NULL
-    );
-    DWORD written;
-    WriteFile(hfile, text, strlen(text), &written, NULL);
-    WriteFile(hfile, "\r\n", 2, &written, NULL);
-    CloseHandle(hfile);
+    char szProcessName[128];
+    GetModuleBaseNameA(GetCurrentProcess(), NULL, szProcessName, sizeof(szProcessName));
+    MessageBoxA(NULL, "BOOM!", szProcessName, MB_OK);
 }
 
-HANDLE main_thread;
-HMODULE current_hModule;
-
-// Main function
-int main() {
-    WriteLog("Thread starting");
-}
-
-// DLL Load into game process
-BOOL APIENTRY DllMain( HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-                     )
+BOOL WINAPI DllMain(
+    HINSTANCE hinstDLL,  // handle to DLL module
+    DWORD fdwReason,     // reason for calling function
+    LPVOID lpvReserved)  // reserved
 {
-    switch (ul_reason_for_call)
+    switch (fdwReason)
     {
     case DLL_PROCESS_ATTACH:
-        current_hModule = hModule;
-        WriteLog("Test, Injected");
-        main_thread = CreateThread(
-            NULL, 0,
-            (LPTHREAD_START_ROUTINE)main,
-            NULL, 0, NULL
-        );
-        if (main_thread == NULL) {
-            return FALSE;
-        }
-        WriteLog("Test, Process created");
+        // Initialize once for each new process.
+        Attack();
         break;
+
     case DLL_THREAD_ATTACH:
-        TerminateThread(main_thread, 0);
         break;
     case DLL_THREAD_DETACH:
+        break;
     case DLL_PROCESS_DETACH:
+        if (lpvReserved != nullptr)
+        {
+            break; // do not do cleanup if process termination scenario
+        }
         break;
     }
-    return TRUE;
+    return TRUE;  // Successful DLL_PROCESS_ATTACH.
 }
-
