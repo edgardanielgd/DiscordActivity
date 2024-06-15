@@ -1,36 +1,38 @@
+// References:
+// https://github.com/HaloSPV3/HCE.DRP
+// https://github.com/aLTis94/Halo_CE/blob/master/offsets.lua
+
 #include <windows.h>
 #include <winerror.h>
 #include <psapi.h>
+#include <iostream>
+#include <fstream>
 
-void Attack()
+using namespace std;
+
+HANDLE main_thread;
+
+int main() 
 {
     char szProcessName[128];
     GetModuleBaseNameA(GetCurrentProcess(), NULL, szProcessName, sizeof(szProcessName));
-    MessageBoxA(NULL, "BOOM!", szProcessName, MB_OK);
+	MessageBoxA(NULL, "Ola de mar", szProcessName, MB_OK);
 }
 
-BOOL WINAPI DllMain(
-    HINSTANCE hinstDLL,  // handle to DLL module
-    DWORD fdwReason,     // reason for calling function
-    LPVOID lpvReserved)  // reserved
+BOOL APIENTRY DllMain(
+    HMODULE hModule,
+    DWORD fwdReason,     
+    LPVOID lpvReserved
+)
 {
-    switch (fdwReason)
-    {
-    case DLL_PROCESS_ATTACH:
-        // Initialize once for each new process.
-        Attack();
-        break;
-
-    case DLL_THREAD_ATTACH:
-        break;
-    case DLL_THREAD_DETACH:
-        break;
-    case DLL_PROCESS_DETACH:
-        if (lpvReserved != nullptr)
-        {
-            break; // do not do cleanup if process termination scenario
-        }
-        break;
-    }
-    return TRUE;  // Successful DLL_PROCESS_ATTACH.
+	if (fwdReason == DLL_PROCESS_ATTACH && main_thread == NULL) {
+		main_thread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)main, NULL, 0, NULL);
+		if (main_thread == NULL) {
+			return false;
+		}
+	}
+	if (fwdReason == DLL_PROCESS_DETACH && main_thread != NULL) {
+		TerminateThread(main_thread, 0);
+	}
+	return true;
 }
